@@ -1,0 +1,63 @@
+
+BASELINE MODELS EVALUATION REPORT
+Generated: 2025-11-23 14:46:42
+================================================================================
+
+REGRESSION TASK - Predicting Sick Percentage
+================================================================================
+
+Random Forest Regression:
+  Train RMSE: 0.4752
+  Test RMSE:  1.0117
+  Train MAE:  0.3560
+  Test MAE:   0.7469
+  Train R²:   0.9454
+  Test R²:    0.7590
+  Training Time: 0.08s
+
+XGBoost Regression:
+  Train RMSE: 0.0607
+  Test RMSE:  1.0509
+  Train MAE:  0.0457
+  Test MAE:   0.7931
+  Train R²:   0.9991
+  Test R²:    0.7400
+  Training Time: 0.17s
+
+CLASSIFICATION TASK - Predicting High Risk Days
+================================================================================
+
+Random Forest Classification:
+  Train Accuracy: 1.0000
+  Test Accuracy:  0.9889
+  Precision:      0.0000
+  Recall:         0.0000
+  F1-Score:       0.0000
+  AUC-ROC:        1.0000
+  Training Time:  0.07s
+
+XGBoost Classification:
+  Train Accuracy: 1.0000
+  Test Accuracy:  0.9889
+  Precision:      0.5000
+  Recall:         1.0000
+  F1-Score:       0.6667
+  AUC-ROC:        1.0000
+  Training Time:  0.02s
+
+SUMMARY
+================================================================================
+Best Regression Model: Random Forest
+Best Classification Model: XGBoost
+
+Files Saved:
+  - models/baseline/rf_regressor.pkl
+  - models/baseline/rf_classifier.pkl
+  - models/baseline/xgb_regressor.pkl
+  - models/baseline/xgb_classifier.pkl
+  - models/evaluation/baseline_results.csv
+  - models/evaluation/feature_importance.csv
+  - models/plots/feature_importance.png
+  - models/plots/regression_predictions.png
+  - models/plots/confusion_matrices.png
+  - models/plots/roc_curves.png

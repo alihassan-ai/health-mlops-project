@@ -1,0 +1,71 @@
+================================================================================
+DATA DRIFT DETECTION REPORT
+Health Risk Prediction System
+================================================================================
+
+Generated: 2025-11-23 18:03:23
+
+================================================================================
+
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+
+Total Features Monitored: 2
+Features with Drift Detected: 0 (0.0%)
+Features Stable: 2
+
+Drift Severity Breakdown:
+  • HIGH severity: 0
+  • MEDIUM severity: 0
+  • LOW/No drift: 2
+
+
+2. DATA WINDOWS
+--------------------------------------------------------------------------------
+
+Reference Period (Training):
+  Date Range: 2025-08-26 00:00:00 to 2025-10-18 00:00:00
+  Records: 270
+
+Current Period (Monitoring):
+  Date Range: 2025-10-19 00:00:00 to 2025-11-23 00:00:00
+  Records: 180
+
+
+3. DETAILED DRIFT ANALYSIS
+--------------------------------------------------------------------------------
+
+✅ No significant drift detected in any features
+
+
+✅ STABLE FEATURES (No Drift):
+
+  • sick_percentage
+  • health_risk_score
+
+
+4. RECOMMENDATIONS
+--------------------------------------------------------------------------------
+
+✅ NO IMMEDIATE ACTION REQUIRED:
+   • Data distributions remain stable
+   • Continue regular monitoring
+   • Schedule next drift check in 30 days
+
+
+5. METHODOLOGY
+--------------------------------------------------------------------------------
+
+Drift Detection Method: Kolmogorov-Smirnov Test
+  • Tests if two samples come from same distribution
+  • Significance level: p < 0.05
+  • Non-parametric test (no distribution assumptions)
+
+Severity Classification:
+  • HIGH: p-value < 0.01 (very significant drift)
+  • MEDIUM: p-value < 0.05 (significant drift)
+  • LOW: p-value >= 0.05 (no significant drift)
+
+================================================================================
+END OF DRIFT REPORT
+================================================================================

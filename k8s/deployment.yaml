@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-mlops-dashboard
+  labels:
+    app: health-mlops
+    component: dashboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: health-mlops
+      component: dashboard
+  template:
+    metadata:
+      labels:
+        app: health-mlops
+        component: dashboard
+    spec:
+      containers:
+      - name: dashboard
+        image: yourusername/health-mlops:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7860
+          name: gradio
+          protocol: TCP
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: GRADIO_SERVER_NAME
+          value: "0.0.0.0"
+        - name: GRADIO_SERVER_PORT
+          value: "7860"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7860
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7860
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        volumeMounts:
+        - name: model-storage
+          mountPath: /app/models
+        - name: data-storage
+          mountPath: /app/data
+        - name: reports-storage
+          mountPath: /app/reports
+      volumes:
+      - name: model-storage
+        persistentVolumeClaim:
+          claimName: health-mlops-models-pvc
+      - name: data-storage
+        persistentVolumeClaim:
+          claimName: health-mlops-data-pvc
+      - name: reports-storage
+        persistentVolumeClaim:
+          claimName: health-mlops-reports-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: health-mlops-models-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: health-mlops-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: health-mlops-reports-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: standard
