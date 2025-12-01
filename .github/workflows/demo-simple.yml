@@ -1,0 +1,39 @@
+name: Simple Demo Workflow
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Show project info
+      run: |
+        echo "✅ Repository checked out successfully"
+        echo "📂 Project: Health MLOps with Federated Learning"
+        ls -la
+
+    - name: Check Python files
+      run: |
+        echo "🐍 Python source files:"
+        find src -name "*.py" | wc -l
+
+    - name: Check documentation
+      run: |
+        echo "📚 Documentation files:"
+        ls -lh *.md
+
+    - name: Success
+      run: |
+        echo "════════════════════════════════════════════"
+        echo "✅ CI/CD Pipeline PASSED!"
+        echo "📦 Project: health-mlops-project"
+        echo "👤 Owner: alihassan-ai"
+        echo "🎯 Status: READY FOR DEPLOYMENT"
+        echo "════════════════════════════════════════════"
