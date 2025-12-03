@@ -100,7 +100,7 @@ jobs:
       continue-on-error: true
 
     - name: Upload data quality report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: data-quality-report
         path: reports/data_quality_report.html
@@ -153,7 +153,7 @@ jobs:
       continue-on-error: true
 
     - name: Upload model artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: trained-models
         path: |
@@ -163,7 +163,7 @@ jobs:
       continue-on-error: true
 
     - name: Upload training plots
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: training-plots
         path: models/plots/
@@ -247,7 +247,7 @@ jobs:
       uses: actions/checkout@v3
     
     - name: Download trained models
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: trained-models
         path: models/
@@ -304,7 +304,7 @@ jobs:
         python src/generate_monitoring_report.py
     
     - name: Upload monitoring report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: monitoring-report
         path: reports/monitoring_report.html
