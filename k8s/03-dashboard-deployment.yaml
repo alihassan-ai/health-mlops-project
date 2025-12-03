@@ -1,0 +1,137 @@
+---
+# Gradio Dashboard Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: health-mlops-central
+  labels:
+    app: dashboard
+    component: frontend
+spec:
+  replicas: 3  # High availability with 3 replicas
+  selector:
+    matchLabels:
+      app: dashboard
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: dashboard
+        component: frontend
+    spec:
+      containers:
+      - name: dashboard
+        image: health-mlops-dashboard:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7860
+          name: http
+          protocol: TCP
+        - containerPort: 8000
+          name: metrics
+          protocol: TCP
+
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        - name: APP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: dashboard-config
+              key: APP_NAME
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: dashboard-config
+              key: LOG_LEVEL
+
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+
+        # Health checks
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 7860
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 7860
+          initialDelaySeconds: 20
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        volumeMounts:
+        - name: models
+          mountPath: /app/models
+          readOnly: true
+        - name: data
+          mountPath: /app/data
+          readOnly: true
+
+      volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: models-pvc
+      - name: data
+        emptyDir: {}
+
+---
+# Dashboard Service (ClusterIP for internal access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-service
+  namespace: health-mlops-central
+  labels:
+    app: dashboard
+spec:
+  type: ClusterIP
+  selector:
+    app: dashboard
+  ports:
+  - name: http
+    protocol: TCP
+    port: 7860
+    targetPort: 7860
+  - name: metrics
+    protocol: TCP
+    port: 8000
+    targetPort: 8000
+  sessionAffinity: ClientIP
+
+---
+# Dashboard Service (LoadBalancer for external access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard-external
+  namespace: health-mlops-central
+  labels:
+    app: dashboard
+spec:
+  type: LoadBalancer
+  selector:
+    app: dashboard
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 7860
+  sessionAffinity: ClientIP

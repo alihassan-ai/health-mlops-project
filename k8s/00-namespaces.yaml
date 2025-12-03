@@ -1,0 +1,64 @@
+---
+# Namespace for central monitoring and aggregation
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: health-mlops-central
+  labels:
+    name: health-mlops-central
+    purpose: central-server
+
+---
+# Namespace for Hospital 1 (City 1)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hospital-1
+  labels:
+    name: hospital-1
+    purpose: federated-node
+    hospital-id: "1"
+
+---
+# Namespace for Hospital 2 (City 2)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hospital-2
+  labels:
+    name: hospital-2
+    purpose: federated-node
+    hospital-id: "2"
+
+---
+# Namespace for Hospital 3 (City 3)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hospital-3
+  labels:
+    name: hospital-3
+    purpose: federated-node
+    hospital-id: "3"
+
+---
+# Namespace for Hospital 4 (City 4)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hospital-4
+  labels:
+    name: hospital-4
+    purpose: federated-node
+    hospital-id: "4"
+
+---
+# Namespace for Hospital 5 (City 5)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hospital-5
+  labels:
+    name: hospital-5
+    purpose: federated-node
+    hospital-id: "5"

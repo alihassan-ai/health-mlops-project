@@ -1,0 +1,73 @@
+---
+# Prometheus Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: health-mlops-central
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+      evaluation_interval: 15s
+
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
+
+      - job_name: 'health-mlops-dashboard'
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - health-mlops-central
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: dashboard
+
+      - job_name: 'hospital-nodes'
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - hospital-1
+                - hospital-2
+                - hospital-3
+                - hospital-4
+                - hospital-5
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            action: keep
+            regex: federated-node
+
+---
+# Application Configuration for Dashboard
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-config
+  namespace: health-mlops-central
+data:
+  APP_NAME: "Health MLOps Dashboard"
+  LOG_LEVEL: "INFO"
+  ENABLE_METRICS: "true"
+  METRICS_PORT: "8000"
+  DASHBOARD_PORT: "7860"
+  MODEL_PATH: "/app/models"
+  DATA_PATH: "/app/data"
+
+---
+# Federated Learning Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: federated-config
+  namespace: health-mlops-central
+data:
+  FL_ROUNDS: "20"
+  FL_LOCAL_EPOCHS: "5"
+  FL_BATCH_SIZE: "32"
+  FL_LEARNING_RATE: "0.001"
+  AGGREGATION_SERVER: "aggregation-service.health-mlops-central.svc.cluster.local:5000"

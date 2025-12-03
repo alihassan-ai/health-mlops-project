@@ -1,0 +1,95 @@
+---
+# Federated Node Deployment Template (Deploy to each hospital namespace)
+# This file shows deployment for Hospital 1, replicate for hospitals 2-5
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: federated-node
+  namespace: hospital-1  # Change for each hospital
+  labels:
+    app: federated-node
+    hospital-id: "1"
+spec:
+  replicas: 2  # Redundancy for each hospital
+  selector:
+    matchLabels:
+      app: federated-node
+      hospital-id: "1"
+  template:
+    metadata:
+      labels:
+        app: federated-node
+        hospital-id: "1"
+    spec:
+      containers:
+      - name: federated-node
+        image: health-mlops-federated-node:latest
+        env:
+        - name: HOSPITAL_ID
+          value: "1"
+        - name: NODE_ID
+          value: "0"
+        - name: CITY_NAME
+          value: "city_1"
+        - name: AGGREGATION_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: federated-config
+              key: AGGREGATION_SERVER
+              optional: false
+        - name: FL_ROUNDS
+          valueFrom:
+            configMapKeyRef:
+              name: federated-config
+              key: FL_ROUNDS
+        - name: FL_LOCAL_EPOCHS
+          valueFrom:
+            configMapKeyRef:
+              name: federated-config
+              key: FL_LOCAL_EPOCHS
+        ports:
+        - containerPort: 5001
+          name: training
+        - containerPort: 8001
+          name: metrics
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+        volumeMounts:
+        - name: local-data
+          mountPath: /app/data
+          readOnly: true
+        - name: local-models
+          mountPath: /app/models
+      volumes:
+      - name: local-data
+        emptyDir: {}  # In production, use PVC for hospital's local data
+      - name: local-models
+        emptyDir: {}
+
+---
+# Federated Node Service (Hospital 1)
+apiVersion: v1
+kind: Service
+metadata:
+  name: federated-node-service
+  namespace: hospital-1
+  labels:
+    app: federated-node
+spec:
+  type: ClusterIP
+  selector:
+    app: federated-node
+  ports:
+  - name: training
+    protocol: TCP
+    port: 5001
+    targetPort: 5001
+  - name: metrics
+    protocol: TCP
+    port: 8001
+    targetPort: 8001

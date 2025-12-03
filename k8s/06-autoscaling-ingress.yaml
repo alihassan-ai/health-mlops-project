@@ -1,0 +1,138 @@
+---
+# Horizontal Pod Autoscaler for Dashboard
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dashboard-hpa
+  namespace: health-mlops-central
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: dashboard
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300  # Wait 5 min before scaling down
+      policies:
+      - type: Percent
+        value: 50  # Scale down max 50% at a time
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0  # Scale up immediately
+      policies:
+      - type: Percent
+        value: 100  # Can double pods at once
+        periodSeconds: 15
+
+---
+# Ingress for External Access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: health-mlops-ingress
+  namespace: health-mlops-central
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"  # Rate limiting
+spec:
+  tls:
+  - hosts:
+    - dashboard.health-mlops.com
+    - grafana.health-mlops.com
+    secretName: health-mlops-tls
+  rules:
+  - host: dashboard.health-mlops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: dashboard-service
+            port:
+              number: 7860
+  - host: grafana.health-mlops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: grafana-service
+            port:
+              number: 3000
+
+---
+# Network Policy - Restrict traffic between namespaces
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: hospital-isolation
+  namespace: hospital-1  # Apply to each hospital namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: federated-node
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: health-mlops-central
+    ports:
+    - protocol: TCP
+      port: 5001  # Allow central server to communicate
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: health-mlops-central
+    ports:
+    - protocol: TCP
+      port: 5000  # Allow sending to aggregation server
+  - to:  # Allow DNS
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    ports:
+    - protocol: UDP
+      port: 53
+
+---
+# Network Policy - Central Server can access all hospitals
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: central-server-policy
+  namespace: health-mlops-central
+spec:
+  podSelector:
+    matchLabels:
+      app: dashboard
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - namespaceSelector: {}  # Can reach all namespaces
+  - ports:  # Allow DNS
+    - protocol: UDP
+      port: 53
