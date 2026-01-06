@@ -21,10 +21,10 @@ This project implements a complete **MLOps pipeline** that predicts health risks
 ##  Features
 
 ###  Data Pipeline
-- ✅ Multi-source data ingestion (health wearables, air quality, weather)
-- ✅ Automated data validation and quality checks
-- ✅ Advanced feature engineering (65+ features)
-- ✅ Data drift detection with statistical monitoring
+-  Multi-source data ingestion (health wearables, air quality, weather)
+-  Automated data validation and quality checks
+-  Advanced feature engineering (65+ features)
+-  Data drift detection with statistical monitoring
 
 ###  Machine Learning
 -  **4 Models Trained:**
