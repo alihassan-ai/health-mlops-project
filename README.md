@@ -1,4 +1,4 @@
-# 🏥 Health MLOps Project with Federated Learning
+#  Health MLOps Project with Federated Learning
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-brightgreen.svg)](https://www.docker.com/)
@@ -9,7 +9,7 @@
 
 ---
 
-## 🎯 Project Overview
+##  Project Overview
 
 This project implements a complete **MLOps pipeline** that predicts health risks by combining data from wearable devices, air quality sensors, and weather stations, using **Federated Learning** to preserve privacy across multiple hospital nodes.
 
@@ -18,40 +18,40 @@ This project implements a complete **MLOps pipeline** that predicts health risks
 
 ---
 
-## ✨ Features
+##  Features
 
-### 🔹 Data Pipeline
+###  Data Pipeline
 - ✅ Multi-source data ingestion (health wearables, air quality, weather)
 - ✅ Automated data validation and quality checks
 - ✅ Advanced feature engineering (65+ features)
 - ✅ Data drift detection with statistical monitoring
 
-### 🔹 Machine Learning
-- ✅ **4 Models Trained:**
+###  Machine Learning
+-  **4 Models Trained:**
   - Random Forest (R² = 0.759)
   - XGBoost (R² = 0.740)
   - PyTorch Neural Network (R² = 0.780) ⭐ **Best**
   - Federated Learning (R² = 0.750) 🔒 **Privacy-preserving**
-- ✅ Hyperparameter optimization
-- ✅ Model versioning and registry
+-  Hyperparameter optimization
+-  Model versioning and registry
 
-### 🔹 MLOps Infrastructure
-- ✅ Complete CI/CD pipeline (GitHub Actions)
-- ✅ Automated testing (pytest with 14+ tests)
-- ✅ Docker containerization
-- ✅ Kubernetes deployment manifests
-- ✅ Performance monitoring & drift detection
-- ✅ REST API (FastAPI)
+###  MLOps Infrastructure
+-  Complete CI/CD pipeline (GitHub Actions)
+-  Automated testing (pytest with 14+ tests)
+-  Docker containerization
+-  Kubernetes deployment manifests
+-  Performance monitoring & drift detection
+-  REST API (FastAPI)
 
-### 🔹 Deployment & Monitoring
-- ✅ Interactive dashboard (Gradio)
-- ✅ Real-time predictions (<100ms latency)
-- ✅ Model comparison interface
-- ✅ Monitoring reports and alerts
+###  Deployment & Monitoring
+-  Interactive dashboard (Gradio)
+-  Real-time predictions (<100ms latency)
+-  Model comparison interface
+-  Monitoring reports and alerts
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Python 3.10+
@@ -107,7 +107,7 @@ docker-compose up -d
 
 ---
 
-## 📊 Results
+##  Results
 
 ### Model Performance
 
@@ -119,10 +119,10 @@ docker-compose up -d
 | Federated | 0.750 | 1.13 | 0.82 | 50 rounds |
 
 ### Federated Learning Impact
-- 🔒 **Privacy:** No raw data sharing between hospitals
-- 📉 **Performance Drop:** Only 3% vs centralized training
-- 🏥 **Nodes:** 5 hospital locations
-- ✅ **Compliance:** HIPAA/GDPR ready
+-  **Privacy:** No raw data sharing between hospitals
+-  **Performance Drop:** Only 3% vs centralized training
+-  **Nodes:** 5 hospital locations
+-  **Compliance:** HIPAA/GDPR ready
 
 ### Top Predictive Features
 1. **health_deterioration** (68%)
@@ -133,7 +133,7 @@ docker-compose up -d
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 ┌─────────────────────────────────────────────┐
@@ -203,7 +203,7 @@ health-mlops-project/
 
 ---
 
-## 🔬 Technologies Used
+##  Technologies Used
 
 ### Machine Learning
 - **Frameworks:** PyTorch, Scikit-Learn, XGBoost
@@ -225,7 +225,7 @@ health-mlops-project/
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 Run the test suite:
 
@@ -244,7 +244,7 @@ pytest tests/test_data.py -v
 
 ---
 
-## 🐳 Docker Deployment
+##  Docker Deployment
 
 ### Build Image
 ```bash
@@ -265,7 +265,7 @@ docker-compose down
 
 ---
 
-## ☸️ Kubernetes Deployment
+##  Kubernetes Deployment
 
 ```bash
 # Apply all manifests
@@ -287,7 +287,7 @@ kubectl delete -f k8s/
 
 ---
 
-## 📊 Monitoring & Drift Detection
+##  Monitoring & Drift Detection
 
 ### Generate Monitoring Report
 ```bash
@@ -308,7 +308,7 @@ Reports are saved to `reports/` directory.
 
 ---
 
-## 🔄 CI/CD Pipeline
+##  CI/CD Pipeline
 
 The GitHub Actions workflow automatically:
 
@@ -344,7 +344,7 @@ The GitHub Actions workflow automatically:
 
 ---
 
-## 📈 API Usage
+##  API Usage
 
 ### Start API Server
 ```bash
@@ -378,7 +378,7 @@ print(response.json())
 
 ---
 
-## 📚 Documentation
+##  Documentation
 
 - **[Project Compliance Report](PROJECT_COMPLIANCE_REPORT.md)** - Full requirement verification
 - **[Docker Deployment Guide](DOCKER_DEPLOYMENT.md)** - Container setup
@@ -388,7 +388,7 @@ print(response.json())
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -404,7 +404,7 @@ This project is licensed under the MIT License.
 
 ---
 
-## 👥 Team
+##  Team
 
 **Project by:** Saamer Abbas (i220468) and Team
 
@@ -412,7 +412,7 @@ This project is licensed under the MIT License.
 
 ---
 
-## 🙏 Acknowledgments
+##  Acknowledgments
 
 - Flower framework for Federated Learning
 - FastAPI for API development
@@ -421,18 +421,16 @@ This project is licensed under the MIT License.
 
 ---
 
-## 📞 Contact
+##  Contact
 
 For questions or issues, please open an issue on GitHub.
 
 ---
 
-**⭐ If you find this project helpful, please star the repository!**
+** If you find this project helpful, please star the repository!**
 
 ---
 
 <div align="center">
 
-🤖 *Generated with [Claude Code](https://claude.com/claude-code)*
 
-</div>
